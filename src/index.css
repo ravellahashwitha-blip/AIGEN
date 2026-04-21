@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@300;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-pixel: "Silkscreen", cursive;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: "Space Grotesk", sans-serif;
+  
+  --color-neon-cyan: #00f3ff;
+  --color-neon-magenta: #ff00ff;
+  --color-neon-yellow: #fff200;
+  --color-glitch-red: #ff0000;
+  --color-void: #050505;
+}
+
+@layer base {
+  body {
+    @apply bg-void text-neon-cyan font-mono overflow-hidden;
+    background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #050505 100%);
+  }
+
+  /* CRT Scanlines */
+  body::after {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 9999;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+  }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0) }
+  20% { transform: translate(-2px, 2px) }
+  40% { transform: translate(-2px, -2px) }
+  60% { transform: translate(2px, 2px) }
+  80% { transform: translate(2px, -2px) }
+  100% { transform: translate(0) }
+}
+
+@keyframes glitch-skew {
+  0% { transform: skew(0deg) }
+  20% { transform: skew(1deg) }
+  25% { transform: skew(-3deg) }
+  30% { transform: skew(0deg) }
+  70% { transform: skew(1deg) }
+  75% { transform: skew(-5deg) }
+  80% { transform: skew(0deg) }
+  100% { transform: skew(0deg) }
+}
+
+@keyframes noise {
+  0% { clip-path: inset(40% 0 61% 0); }
+  20% { clip-path: inset(92% 0 1% 0); }
+  40% { clip-path: inset(43% 0 1% 0); }
+  60% { clip-path: inset(25% 0 58% 0); }
+  80% { clip-path: inset(54% 0 7% 0); }
+  100% { clip-path: inset(58% 0 43% 0); }
+}
+
+.glitch-text {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-void);
+}
+
+.glitch-text::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--color-neon-magenta);
+  clip: rect(44px, 450px, 56px, 0);
+  animation: noise 3s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+  left: -2px;
+  text-shadow: -2px 0 var(--color-neon-cyan);
+  clip: rect(44px, 450px, 56px, 0);
+  animation: noise 2s infinite linear alternate-reverse;
+}
+
+.neon-border {
+  border: 1px solid var(--color-neon-cyan);
+  box-shadow: 0 0 10px var(--color-neon-cyan), inset 0 0 5px var(--color-neon-cyan);
+}
+
+.neon-border-magenta {
+  border: 1px solid var(--color-neon-magenta);
+  box-shadow: 0 0 10px var(--color-neon-magenta), inset 0 0 5px var(--color-neon-magenta);
+}
+
+.screen-tear {
+  animation: glitch-skew 4s infinite step-end;
+}
